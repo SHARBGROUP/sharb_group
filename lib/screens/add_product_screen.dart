@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import '../database/product_database.dart';
+import '../models/product.dart';
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
 
@@ -45,10 +46,42 @@ class _AddProductScreenState extends State<AddProductScreen> {
     super.dispose();
   }
 
-  void saveProduct() {
+  Future<void> saveProduct() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
+    final product = Product(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: nameController.text.trim(),
+      code: codeController.text.trim(),
+      barcode: barcodeController.text.trim(),
+      category: categoryController.text.trim(),
+      unit: unitController.text.trim(),
+      purchasePrice:
+      double.tryParse(purchasePriceController.text.trim()) ?? 0,
+      salePrice:
+      double.tryParse(salePriceController.text.trim()) ?? 0,
+      wholesalePrice:
+      double.tryParse(wholesalePriceController.text.trim()) ?? 0,
+      physicalStock:
+      int.tryParse(openingStockController.text.trim()) ?? 0,
+      reservedStock: 0,
+      soldQuantity: 0,
+      minimumStock:
+      int.tryParse(minimumStockController.text.trim()) ?? 0,
+      imagePath: null,
+      supplierId: supplierController.text.trim().isEmpty
+          ? null
+          : supplierController.text.trim(),
+      description: descriptionController.text.trim().isEmpty
+          ? null
+          : descriptionController.text.trim(),
+    );
+
+    await ProductDatabase.instance.insertProduct(product);
+
+    if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
