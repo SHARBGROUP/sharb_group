@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/add_product_screen.dart';
 
 void main() {
   runApp(const SharbGroupApp());
@@ -116,7 +117,6 @@ class DashboardScreen extends StatelessWidget {
               style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 20),
-
             Row(
               children: [
                 Expanded(
@@ -136,9 +136,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 12),
-
             Row(
               children: [
                 Expanded(
@@ -158,9 +156,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 28),
-
             const Text(
               'Quick Actions',
               style: TextStyle(
@@ -168,23 +164,42 @@ class DashboardScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 12),
-
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: [
-                _actionButton('New Sale', Icons.point_of_sale),
-                _actionButton('New Order', Icons.add_shopping_cart),
-                _actionButton('Add Product', Icons.inventory_2),
-                _actionButton('Customer', Icons.people),
-                _actionButton('Expense', Icons.money_off),
+                _actionButton(
+                  'New Sale',
+                  Icons.point_of_sale,
+                ),
+                _actionButton(
+                  'New Order',
+                  Icons.add_shopping_cart,
+                ),
+                _actionButton(
+                  'Add Product',
+                  Icons.inventory_2,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddProductScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _actionButton(
+                  'Customer',
+                  Icons.people,
+                ),
+                _actionButton(
+                  'Expense',
+                  Icons.money_off,
+                ),
               ],
             ),
-
             const SizedBox(height: 28),
-
             const Text(
               'Business Status',
               style: TextStyle(
@@ -192,9 +207,7 @@ class DashboardScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 12),
-
             Card(
               child: ListTile(
                 leading: const Icon(
@@ -202,7 +215,9 @@ class DashboardScreen extends StatelessWidget {
                   color: Colors.green,
                 ),
                 title: const Text('System Status'),
-                subtitle: const Text('Ready • Offline + Cloud Sync'),
+                subtitle: const Text(
+                  'Ready • Offline + Cloud Sync',
+                ),
                 trailing: const Text('ONLINE'),
               ),
             ),
@@ -246,10 +261,11 @@ class DashboardScreen extends StatelessWidget {
 
   static Widget _actionButton(
       String title,
-      IconData icon,
-      ) {
+      IconData icon, {
+        VoidCallback? onPressed,
+      }) {
     return OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(icon),
       label: Text(title),
     );
